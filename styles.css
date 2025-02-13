@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Evitar scrollbars */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000000;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px; /* Ajusta el padding según sea necesario */
+}
+
+h1 {
+    font-size: 80px;
+    font-family: "Teko", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+    margin: 0; 
+    margin-left: 30px;
+}
+
+p {
+    font-family: "Roboto Mono", monospace;
+    font-size: 10px;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 45%;
+    color: white;
+    margin-top: -30px;
+    margin-left: 30px ;
+}
+
+.image-column {
+    margin-top: -200px;
+    margin-left: 650px; 
+    display: flex;
+    flex-direction: row;
+    transition: .4s ease;
+}
+
+.image-column img {
+    cursor: pointer;
+    width: 100px; /* Ajusta el tamaño según sea necesario */
+    margin-right: 50px;
+    margin-bottom: 5px; /* Espacio entre las imágenes */
+    
+}
+
+#toggleButton {
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(75, 255, 0);
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(0, 0, 0);
+    font-size: 10px;
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#toggleButton:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+#glitchButton {
+    position: absolute;
+    top: 90%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(75, 255, 0);
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(0, 0, 0);
+    font-size: 10px;
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#glitchButton:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+#textureButton1 {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    padding: 2px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#textureButton1:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+#textureButton2 {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    padding: 2px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#textureButton2:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+#textureButton3 {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    padding: 2px 17px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#textureButton3:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+#textureButton4 {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    padding: 2px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#textureButton4:hover {
+    background-color: rgb(0, 0, 0);
+    color: rgb(75, 255, 0);
+}
+
+  #tomarCaptura {
+    position: absolute;
+    top: 10%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(75, 255, 0);
+    font-size: 8px;
+    padding: 1px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+ 
+#tomarCaptura:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}  
+
+#toggleMuteButton {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: 2px solid rgb(75, 255, 0);
+    color: rgb(75, 255, 0);
+    font-size: 10px;
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#toggleMuteButton:hover {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+#toggleMuteButton:click {
+    background-color: white;
+    color: rgb(75, 255, 0);
+}
+
+
+.asteriscos{
+    color: rgb(255, 255, 255); 
+    position: absolute;
+    top: 100%;
+    left: 35%; 
+    font-size: 10px; 
+
+
+}
+
+
+
+#nombre {
+    color: rgb(255, 255, 255); 
+    position: absolute;
+    top: 100%;
+    left: -1000%; 
+    font-size: 10px; /
+
+}
