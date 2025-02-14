@@ -9,7 +9,6 @@ let showPaquito = true;
 let showPaco = false;
 let showCato = true;
 let showBackground = true;
-let currentTexture;
 let isGlitched = false;
 let isOrbiting = false;
 
@@ -24,9 +23,9 @@ let floatOffsetYCato = 0;
 let floatSpeedCato;
 
 // Texturas y modelos
-let texturaPaquito, texturaCato;
-let modeladopaco_sg, modeladopaco_g;
-let modeladoCATO_sg, modeladoCATO_g;
+let texturaFront, texturaBack, texturaCatoFront, texturaCatoBack;
+let modeladopacoFRONT, modeladopacoBACK;
+let modeladoCATOFRONT, modeladoCATOBACK;
 
 // Variables para el efecto de estiramiento
 let isStretched = false; // Indica si los modelos están estirados
@@ -36,16 +35,16 @@ const stretchScale = 2.5; // Factor de escala para el estiramiento
 
 function preload() {
     // Cargar texturas
-    texturaPaquito = loadImage("PACOSI/COMBINEDUV.png");
-    texturaCato = loadImage("PACOSI/COMBINEDCATRIEL.png");
+    texturaFront = loadImage("PACOSI/UVFRONTP.png");
+    texturaBack = loadImage("PACOSI/UVBACKP.png");
+    texturaCatoFront = loadImage("PACOSI/UVCATOFRONT.png");
+    texturaCatoBack = loadImage("PACOSI/UVCATOBACK.png");
 
     // Cargar modelos
-    modeladopaco_sg = loadModel("PACOSI/pacoinflao2.obj", true);
-    modeladopaco_g = loadModel("PACOSI/pacoinflao2.obj", true);
-    modeladoCATO_sg = loadModel("PACOSI/CATO.obj", true);
-    modeladoCATO_g = loadModel("PACOSI/CATO.obj", true);
-
-    currentTexture = texturaPaquito; // Textura inicial
+    modeladopacoFRONT = loadModel("PACOSI/pacoinflaoFRONT.obj", true);
+    modeladopacoBACK = loadModel("PACOSI/pacoinflaoBACK.obj", true);
+    modeladoCATOFRONT = loadModel("PACOSI/CATOFRONT.obj", true);
+    modeladoCATOBACK = loadModel("PACOSI/CATOBACK.obj", true);
 }
 
 function setup() {
@@ -79,7 +78,7 @@ function draw() {
 
     ambientLight(255, 255, 255);
 
-    // Mostrar Paquito
+    // Mostrar Paquito (frente y atrás)
     if (showPaquito) {
         mostrarPaco();
     }
@@ -87,30 +86,20 @@ function draw() {
         mostrarPacog();
     }
 
-    // Mostrar Cato
+    // Mostrar Cato (frente y atrás)
     if (showCato) {
         mostrarCato();
     }
 
-    // Verificar colisión y aplicar efecto de estiramiento
-    if (checkCollision()) {
-        if (!isStretched) {
-            isStretched = true;
-            stretchStartTime = millis(); // Registrar el tiempo de inicio del estiramiento
-        }
-    } else {
-        if (isStretched && millis() - stretchStartTime > stretchDuration) {
-            isStretched = false; // Restaurar la escala original después de la duración del estiramiento
-        }
-    }
 
     orbitControl();
 }
 
 function mostrarPaco() {
-    texture(currentTexture);
+    // Mostrar la parte frontal de Paquito
     push();
     noStroke();
+    texture(texturaFront); // Aplicar textura frontal
 
     // Efecto de flotación suave y aleatorio para Paquito
     floatOffsetXPaquito = 100 * sin(frameCount * floatSpeedPaquito); // Movimiento horizontal
@@ -120,6 +109,26 @@ function mostrarPaco() {
     rotateZ(180);
     rotateY(-angle); 
     rotateX(-angle);
+    translate(-20, 10, 330);
+
+    // Aplicar efecto de estiramiento si hay colisión
+    if (isStretched) {
+        scale(100, stretchScale, -21); // Estirar en el eje Y
+    }
+
+    model(modeladopacoFRONT); // Mostrar el modelo frontal
+    pop();
+
+    // Mostrar la parte trasera de Paquito
+    push();
+    noStroke();
+    texture(texturaBack); // Aplicar textura trasera
+
+    // Aplicar las mismas transformaciones que al frente
+    translate(floatOffsetXPaquito, floatOffsetYPaquito, -100);
+    rotateZ(-180);
+    rotateY(-angle); 
+    rotateX(-angle);
     translate(-20, 10, 300);
 
     // Aplicar efecto de estiramiento si hay colisión
@@ -127,22 +136,43 @@ function mostrarPaco() {
         scale(100, stretchScale, -21); // Estirar en el eje Y
     }
 
-    model(modeladopaco_sg);
+    model(modeladopacoBACK); // Mostrar el modelo trasero
     pop();
 
     angle += 0.1; // Rotación lenta (opcional)
 }
 
 function mostrarCato() {
-    texture(texturaCato); // Usar la textura de Cato
+    // Mostrar la parte frontal de Cato
     push();
     noStroke();
+    texture(texturaCatoFront); // Aplicar textura frontal
 
     // Efecto de flotación suave y aleatorio para Cato
     floatOffsetXCato = 100 * sin(frameCount * floatSpeedCato * 1.2); // Movimiento horizontal
     floatOffsetYCato = 50 * cos(frameCount * floatSpeedCato * 1.8); // Movimiento vertical
 
     translate(floatOffsetXCato + 200, floatOffsetYCato - 100, -100); // Aplica el desplazamiento de flotación
+    rotateZ(180);
+    rotateY(angle); 
+    rotateX(angle);
+    translate(10, 109, 136);
+
+    // Aplicar efecto de estiramiento si hay colisión
+    if (isStretched) {
+        scale(100, stretchScale, -21); // Estirar en el eje Y
+    }
+
+    model(modeladoCATOFRONT); // Mostrar el modelo frontal
+    pop();
+
+    // Mostrar la parte trasera de Cato
+    push();
+    noStroke();
+    texture(texturaCatoBack); // Aplicar textura trasera
+
+    // Aplicar las mismas transformaciones que al frente
+    translate(floatOffsetXCato + 200, floatOffsetYCato - 100, -100);
     rotateZ(180);
     rotateY(angle); 
     rotateX(angle);
@@ -153,7 +183,7 @@ function mostrarCato() {
         scale(100, stretchScale, -21); // Estirar en el eje Y
     }
 
-    model(modeladoCATO_sg);
+    model(modeladoCATOBACK); // Mostrar el modelo trasero
     pop();
 
     angle += 0.1; // Rotación lenta (opcional)
@@ -197,10 +227,6 @@ function toggleGlitch() {
     } else {
         console.log("Glitch desactivado");
     }
-}
-
-function changeTexture(newTexture) {
-    currentTexture = newTexture;
 }
 
 function tomarCaptura() {
