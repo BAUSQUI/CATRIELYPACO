@@ -57,6 +57,8 @@ function setup() {
 }
 
 function draw() {
+
+    ambientLight(255, 255, 255);
     // Verifica si el usuario está manipulando la cámara
     if (mouseIsPressed && (movedX !== 0 || movedY !== 0)) {
         isOrbiting = true;
@@ -76,7 +78,7 @@ function draw() {
         background(0); // Fondo normal
     }
 
-    ambientLight(255, 255, 255);
+
 
     // Mostrar Paquito (frente y atrás)
     if (showPaquito) {
