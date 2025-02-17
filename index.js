@@ -47,10 +47,10 @@ function preload() {
     texturaCatoBack = loadImage("PACOSI/UVCATOBACK.png");
 
     // Cargar modelos
-    modeladopacoFRONT = loadModel("PACOSI/pacoinflaoDECIM.obj", true);
-    modeladopacoBACK = loadModel("PACOSI/pacoinflaoDECIMBack.obj", true);
-    modeladoCATOFRONT = loadModel("PACOSI/catrielDECIMFront.obj", true);
-    modeladoCATOBACK = loadModel("PACOSI/catrielDECIMBack.obj", true);
+    modeladopacoFRONT = loadModel("PACOSI/PACO_FRONT.obj", true);
+    modeladopacoBACK = loadModel("PACOSI/PACO_BACK.obj", true);
+    modeladoCATOFRONT = loadModel("PACOSI/CATRIEL_FRONT.obj", true);
+    modeladoCATOBACK = loadModel("PACOSI/CATRIEL_BACK.obj", true);
 
     // modeladopacoFRONT_inflado = loadModel("PACOSI/pacoSUPERinflaoFront.obj", true);
     // modeladopacoBACK_inflado = loadModel("PACOSI/pacoSUPERinflaoBack.obj", true);
@@ -147,7 +147,7 @@ function mostrarPaco() {
     rotateZ(180);
     rotateY(-angle); 
     rotateX(-angle);
-    translate(-20, 10, 330);
+    translate(-20, 10, 328);
 
     // Mostrar el modelo frontal correspondiente
     if (isInflated) {
