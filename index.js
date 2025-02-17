@@ -33,6 +33,12 @@ let stretchStartTime = 0; // Tiempo en que comenzó el estiramiento
 const stretchDuration = 1000; // Duración del estiramiento en milisegundos
 const stretchScale = 2.5; // Factor de escala para el estiramiento
 
+// Variable para el modelo seleccionado
+let selectedModel = null; // 'Paquito', 'Cato' o null
+
+let modeladopacoFRONT_inflado, modeladopacoBACK_inflado; // Modelos inflados
+let isInflated = false; // Estado para controlar si el modelo está inflado o no
+
 function preload() {
     // Cargar texturas
     texturaFront = loadImage("PACOSI/UVFRONTP.png");
@@ -41,10 +47,13 @@ function preload() {
     texturaCatoBack = loadImage("PACOSI/UVCATOBACK.png");
 
     // Cargar modelos
-    modeladopacoFRONT = loadModel("PACOSI/pacoinflaoFRONT.obj", true);
-    modeladopacoBACK = loadModel("PACOSI/pacoinflaoBACK.obj", true);
-    modeladoCATOFRONT = loadModel("PACOSI/CATOFRONT.obj", true);
-    modeladoCATOBACK = loadModel("PACOSI/CATOBACK.obj", true);
+    modeladopacoFRONT = loadModel("PACOSI/pacoinflaoDECIM.obj", true);
+    modeladopacoBACK = loadModel("PACOSI/pacoinflaoDECIMBack.obj", true);
+    modeladoCATOFRONT = loadModel("PACOSI/catrielDECIMFront.obj", true);
+    modeladoCATOBACK = loadModel("PACOSI/catrielDECIMBack.obj", true);
+
+    // modeladopacoFRONT_inflado = loadModel("PACOSI/pacoSUPERinflaoFront.obj", true);
+    // modeladopacoBACK_inflado = loadModel("PACOSI/pacoSUPERinflaoBack.obj", true);
 }
 
 function setup() {
@@ -57,8 +66,10 @@ function setup() {
 }
 
 function draw() {
+    //directionalLight(255, 255, 0, 0, -1, 0);
+    
+    ambientLight(255);
 
-    ambientLight(255, 255, 255);
     // Verifica si el usuario está manipulando la cámara
     if (mouseIsPressed && (movedX !== 0 || movedY !== 0)) {
         isOrbiting = true;
@@ -78,14 +89,12 @@ function draw() {
         background(0); // Fondo normal
     }
 
-
-
-    // Mostrar Paquito (frente y atrás)
     if (showPaquito) {
-        mostrarPaco();
-    }
-    if (showPaco) {
-        mostrarPacog();
+        if (isInflated) {
+            mostrarPacoInflado(); // Mostrar modelo inflado
+        } else {
+            mostrarPaco(); // Mostrar modelo normal
+        }
     }
 
     // Mostrar Cato (frente y atrás)
@@ -93,8 +102,35 @@ function draw() {
         mostrarCato();
     }
 
+    // Aplicar orbitControl solo al modelo seleccionado
+    if (selectedModel === 'Paquito') {
+        orbitControl(); // Control para Paquito
+    } else if (selectedModel === 'Cato') {
+        orbitControl(); // Control para Cato
+    }
+}
 
-    orbitControl();
+function toggleInflate() {
+    isInflated = !isInflated; // Cambiar el estado
+    console.log(isInflated ? "Paco inflado" : "Paco normal");
+}
+
+function mousePressed() {
+    // Verificar si el usuario hizo clic en un modelo
+    let paquitoDistance = dist(mouseX, mouseY, floatOffsetXPaquito, floatOffsetYPaquito);
+    let catoDistance = dist(mouseX, mouseY, floatOffsetXCato + 100, floatOffsetYCato - 200);
+
+    // Definir un umbral de selección (ajusta según el tamaño de los modelos)
+    let selectionThreshold = 1500;
+
+    if (paquitoDistance < selectionThreshold) {
+        selectedModel = 'Paquito'; // Seleccionar Paquito
+    } else if (catoDistance < selectionThreshold) {
+        selectedModel = 'Cato'; // Seleccionar Cato
+    } else {
+        selectedModel = null; // Deseleccionar ambos
+    }
+
 }
 
 function mostrarPaco() {
@@ -113,12 +149,20 @@ function mostrarPaco() {
     rotateX(-angle);
     translate(-20, 10, 330);
 
-    // Aplicar efecto de estiramiento si hay colisión
-    if (isStretched) {
-        scale(100, stretchScale, -21); // Estirar en el eje Y
+    // Mostrar el modelo frontal correspondiente
+    if (isInflated) {
+        if (modeladopacoFRONT_inflado) {
+            model(modeladopacoFRONT_inflado); // Modelo inflado
+        } else {
+            console.error("Modelo inflado frontal no cargado.");
+        }
+    } else {
+        if (modeladopacoFRONT) {
+            model(modeladopacoFRONT); // Modelo normal
+        } else {
+            console.error("Modelo frontal no cargado.");
+        }
     }
-
-    model(modeladopacoFRONT); // Mostrar el modelo frontal
     pop();
 
     // Mostrar la parte trasera de Paquito
@@ -133,16 +177,70 @@ function mostrarPaco() {
     rotateX(-angle);
     translate(-20, 10, 300);
 
-    // Aplicar efecto de estiramiento si hay colisión
-    if (isStretched) {
-        scale(100, stretchScale, -21); // Estirar en el eje Y
+    // Mostrar el modelo trasero correspondiente
+    if (isInflated) {
+        if (modeladopacoBACK_inflado) {
+            model(modeladopacoBACK_inflado); // Modelo inflado
+        } else {
+            console.error("Modelo inflado trasero no cargado.");
+        }
+    } else {
+        if (modeladopacoBACK) {
+            model(modeladopacoBACK); // Modelo normal
+        } else {
+            console.error("Modelo trasero no cargado.");
+        }
     }
-
-    model(modeladopacoBACK); // Mostrar el modelo trasero
     pop();
 
     angle += 0.1; // Rotación lenta (opcional)
 }
+function mostrarPacoInflado () {
+        // Mostrar la parte frontal de Paquito inflado
+        push();
+        noStroke();
+        texture(texturaFront); // Aplicar textura frontal
+    
+        // Efecto de flotación suave y aleatorio para Paquito
+        floatOffsetXPaquito = 100 * sin(frameCount * floatSpeedPaquito); // Movimiento horizontal
+        floatOffsetYPaquito = 50 * cos(frameCount * floatSpeedPaquito * 1.5); // Movimiento vertical
+    
+        translate(floatOffsetXPaquito, floatOffsetYPaquito, -100); // Aplica el desplazamiento de flotación
+        rotateZ(180);
+        rotateY(-angle); 
+        rotateX(-angle);
+        translate(-20, 10, 330);
+    
+        // Mostrar el modelo frontal inflado
+        if (modeladopacoFRONT_inflado) {
+            model(modeladopacoFRONT_inflado); // Modelo inflado
+        } else {
+            console.error("Modelo inflado frontal no cargado.");
+        }
+        pop();
+    
+        // Mostrar la parte trasera de Paquito inflado
+        push();
+        noStroke();
+        texture(texturaBack); // Aplicar textura trasera
+    
+        // Aplicar las mismas transformaciones que al frente
+        translate(floatOffsetXPaquito, floatOffsetYPaquito, -100);
+        rotateZ(-180);
+        rotateY(-angle); 
+        rotateX(-angle);
+        translate(-20, 10, 300);
+    
+        // Mostrar el modelo trasero inflado
+        if (modeladopacoBACK_inflado) {
+            model(modeladopacoBACK_inflado); // Modelo inflado
+        } else {
+            console.error("Modelo inflado trasero no cargado.");
+        }
+        pop();
+    
+        angle += 0.1; // Rotación lenta (opcional)
+    }
 
 function mostrarCato() {
     // Mostrar la parte frontal de Cato
@@ -160,10 +258,7 @@ function mostrarCato() {
     rotateX(angle);
     translate(10, 109, 136);
 
-    // Aplicar efecto de estiramiento si hay colisión
-    if (isStretched) {
-        scale(100, stretchScale, -21); // Estirar en el eje Y
-    }
+ 
 
     model(modeladoCATOFRONT); // Mostrar el modelo frontal
     pop();
@@ -231,8 +326,7 @@ function toggleGlitch() {
     }
 }
 
-function tomarCaptura() {
-    saveGif('mySketch', 3 , { delay: 1 });
-    enlaceDescarga.download = 'mi_souvenir.GIF'; // 
-    enlaceDescarga.click();
+function toggleInflate() {
+    isInflated = !isInflated; // Cambiar el estado
+    console.log(isInflated ? "Paco inflado" : "Paco normal");
 }
