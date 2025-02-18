@@ -41,14 +41,14 @@ let isInflated = false; // Estado para controlar si el modelo está inflado o no
 
 function preload() {
     // Cargar texturas
-    texturaFront = loadImage("PACOSI/UVFRONTP.png");
-    texturaBack = loadImage("PACOSI/UVBACKP.png");
+    texturaFront = loadImage("PACOSI/PACOUV.png");
+    texturaBack = loadImage("PACOSI/PACOUVBACK.png");
     texturaCatoFront = loadImage("PACOSI/UVCATOFRONT.png");
     texturaCatoBack = loadImage("PACOSI/UVCATOBACK.png");
 
     // Cargar modelos
-    modeladopacoFRONT = loadModel("PACOSI/PACO_FRONT.obj", true);
-    modeladopacoBACK = loadModel("PACOSI/PACO_BACK.obj", true);
+    modeladopacoFRONT = loadModel("PACOSI/paco_front2.obj", true);
+    modeladopacoBACK = loadModel("PACOSI/paco_back2.obj", true);
     modeladoCATOFRONT = loadModel("PACOSI/CATRIEL_FRONT.obj", true);
     modeladoCATOBACK = loadModel("PACOSI/CATRIEL_BACK.obj", true);
 
@@ -86,7 +86,7 @@ function draw() {
 
     // Dibuja el fondo solo si showBackground es true
     if (showBackground) {
-        background(0); // Fondo normal
+        background(218); // Fondo normal
     }
 
     if (showPaquito) {
