@@ -147,7 +147,7 @@ function mostrarPaco() {
     rotateZ(180);
     rotateY(-angle); 
     rotateX(-angle);
-    translate(-20, 10, 328);
+    translate(-20, 10, 272);
 
     // Mostrar el modelo frontal correspondiente
     if (isInflated) {
